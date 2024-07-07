@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagine Multi+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+            overflow-y: auto;
+        }
+        .container {
+            text-align: center;
+            max-width: 90%;
+            width: 100%;
+            padding: 20px;
+        }
+        .title {
+            font-size: 36px;
+            margin-bottom: 5px;
+            animation: rainbow 5s linear infinite alternate;
+        }
+        .subtitle {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #bbbbbb;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .form-group-row > div {
+            flex: 1 1 30%;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="number"], input[type="submit"], button {
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            border-radius: 10px;
+            margin-top: 5px;
+            width: calc(100% - 16px); /* Adjusted width to account for padding */
+            box-sizing: border-box;
+            background: linear-gradient(#000000, #000000); /* Black gradient from top to bottom */
+            color: #ffffff;
+            cursor: pointer;
+        }
+        input[type="text"], input[type="number"] {
+            background-color: #333333;
+            color: #ffffff;
+        }
+        .image-box {
+            margin-top: 20px;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            16.7% { color: #ff7f00; }
+            33.3% { color: #ffff00; }
+            50% { color: #00ff00; }
+            66.7% { color: #0000ff; }
+            83.3% { color: #8b00ff; }
+            100% { color: #ff0000; }
+        }
+
+        /* Media Query for Mobile */
+        @media only screen and (max-width: 600px) {
+            .form-group-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .form-group-row > div {
+                flex: 1 1 100%;
+                margin-right: 0;
+            }
+            input[type="text"], input[type="number"], input[type="submit"], button {
+                padding: 8px;
+                font-size: 12px;
+            }
+            .title {
+                font-size: 28px;
+            }
+            .subtitle {
+                font-size: 12px;
+            }
+            .top-right {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+        }
+        .top-right a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .top-right a:hover {
+            text-decoration: underline;
+        }
+        /* Adjustments for small button and centered alignment */
+        .generate-button {
+            padding: 12px 24px; /* Larger padding for larger button */
+            font-size: 16px; /* Larger font size for larger button */
+            border-radius: 10px;
+            margin: 10px auto; /* Center align the button */
+            cursor: pointer;
+            background: linear-gradient(#000000, #000000); /* Black gradient from top to bottom */
+            color: #ffffff;
+        }
+        .generate-button:hover {
+            filter: brightness(110%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-right">
+            <a href="https://www.linkedin.com/in/rahulsinghaind/" target="_blank">Developed by: Rahul Singha</a>
+        </div>
+        <div class="title">Imagine Multi+</div>
+        <div class="subtitle">Generate image from text in any language</div>
+        <form id="generate-form" method="post" action="/">
+            <div class="form-group">
+                <label for="text_to_translate">Text to translate and generate image:</label>
+                <input type="text" id="text_to_translate" name="text_to_translate" required>
+            </div>
+            <div class="form-group-row">
+                <div>
+                    <label for="seed">Seed:</label>
+                    <input type="number" id="seed" name="seed" value="42" style="width: 70px;"> <!-- Adjusted width -->
+                </div>
+                <div>
+                    <label for="image_gen_steps">Steps:</label>
+                    <input type="number" id="image_gen_steps" name="image_gen_steps" value="35" style="width: 70px;"> <!-- Adjusted width -->
+                </div>
+                <div>
+                    <label for="image_gen_guidance_scale">Scale:</label>
+                    <input type="number" step="0.1" id="image_gen_guidance_scale" name="image_gen_guidance_scale" value="9" style="width: 70px;"> <!-- Adjusted width -->
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="generate-button">Generate</button>
+            </div>
+        </form>
+        <div class="image-box" id="image-box">
+            {% if image_data %}
+                <img src="data:image/png;base64,{{ image_data }}" alt="Generated Image">
+                <form method="post" action="/save_image">
+                    <button type="submit">Save Image</button>
+                    <button type="button" onclick="window.location.href='/'">Regenerate</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
