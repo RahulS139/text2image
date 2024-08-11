@@ -1,3 +1,6 @@
+# pip install Flask googletrans torch diffusers
+
+
 from flask import Flask, request, render_template, send_file
 from googletrans import Translator
 import torch
